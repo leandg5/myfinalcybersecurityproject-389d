@@ -1,7 +1,7 @@
-Scaling [--solutionname--] With Kubernetes
+Scaling [myfinalcybersecurityproject-389d] With Kubernetes
 ===========================
 
-Generated On: --datetime-- UTC
+Generated On: 2024-11-29 01:38:58 UTC
 
 You can scale your solution with Kubernetes.  To do so, will will need to apply the following YAML files to your Kubernetes cluster.
 
@@ -13,13 +13,13 @@ You can scale your solution with Kubernetes.  To do so, will will need to apply 
 .. important:: 
    Below assumes you have a Kubernetes cluster and **kubectl** installed in your Linux environment.
 
-Based on your TML solution [--solutionname--] - if you want to scale your application with Kubernetes - you will need to apply the following YAML files.
+Based on your TML solution [myfinalcybersecurityproject-389d] - if you want to scale your application with Kubernetes - you will need to apply the following YAML files.
 
 .. list-table::
 
    * - **YML File**
      - **Description**
-   * - :ref:`--solutionnamefile--`
+   * - :ref:`myfinalcybersecurityproject-389d.yml`
      - This is your main solution YAML file.  
  
        It MUST be applied to your Kubernetes cluster.
@@ -52,20 +52,127 @@ kubectl apply command
 
 .. code-block:: YAML
 
-   --kubectl--
+   kubectl apply -f mysql-storage.yml -f mysql-db-deployment.yml -f qdrant.yml -f privategpt.yml -f myfinalcybersecurityproject-389d.yml
 
---solutionnamefile--
+myfinalcybersecurityproject-389d.yml
 ------------------------
 
 .. important::
-   Copy and Paste this YAML file: --solutionnamefile-- - and save it locally.
+   Copy and Paste this YAML file: myfinalcybersecurityproject-389d.yml - and save it locally.
 
    Also, MAKE SURE to update any tokens and passwords in this file.
 
 .. code-block:: YAML
 
-   ################# --solutionnamefile--
-   --solutionnamecode--
+   ################# myfinalcybersecurityproject-389d.yml
+   
+     apiVersion: apps/v1
+     kind: Deployment
+     metadata:
+       name: myfinalcybersecurityproject-389d
+     spec:
+       selector:
+         matchLabels:
+           app: myfinalcybersecurityproject-389d
+       replicas: 3 # tells deployment to run 1 pods matching the template
+       template:
+         metadata:
+           labels:
+             app: myfinalcybersecurityproject-389d
+         spec:
+           containers:
+           - name: myfinalcybersecurityproject-389d
+             image: leandg5/myfinalcybersecurityproject-389d-amd64
+             volumeMounts:
+             - name: dockerpath
+               mountPath: /var/run/docker.sock
+             ports:
+             - containerPort: 8883
+             - containerPort: 45491
+             - containerPort: 50899
+             - containerPort: 53145
+             env:
+             - name: TSS
+               value: '0'
+             - name: SOLUTIONNAME
+               value: 'myfinalcybersecurityproject-389d'
+             - name: SOLUTIONDAG
+               value: 'solution_preprocessing_ai_mqtt_dag-myfinalcybersecurityproject-389d'
+             - name: GITUSERNAME
+               value: 'leandg5'
+             - name: GITREPOURL
+               value: 'https://github.com/leandg5/raspberrypi'
+             - name: SOLUTIONEXTERNALPORT
+               value: '53145'
+             - name: CHIP
+               value: 'amd64'
+             - name: SOLUTIONAIRFLOWPORT
+               value: '45491'
+             - name: SOLUTIONVIPERVIZPORT
+               value: '50899'
+             - name: DOCKERUSERNAME
+               value: 'leandg5'
+             - name: CLIENTPORT
+               value: '8883'
+             - name: EXTERNALPORT
+               value: '35207'
+             - name: KAFKACLOUDUSERNAME
+               value: ''
+             - name: VIPERVIZPORT
+               value: '9005'
+             - name: MQTTUSERNAME
+               value: 'leandrodg5'
+             - name: AIRFLOWPORT
+               value: '9000'
+             - name: GITPASSWORD
+               value: '<ENTER GITHUB PASSWORD>'
+             - name: KAFKACLOUDPASSWORD
+               value: '<Enter API secret>'
+             - name: MQTTPASSWORD
+               value: '<ENTER MQTT PASSWORD>'
+             - name: READTHEDOCS
+               value: '<ENTER READTHEDOCS TOKEN>'
+             - name: qip 
+               value: 'localhost' # This is private GPT IP              
+             - name: KUBE
+               value: '1'
+           volumes: 
+           - name: dockerpath
+             hostPath:
+               path: /var/run/docker.sock
+           dnsPolicy: "None"
+           dnsConfig:
+             nameservers:
+               - 8.8.8.8                
+               
+   ---
+     apiVersion: v1
+     kind: Service
+     metadata:
+       name: myfinalcybersecurityproject-389d-service
+       labels:
+         app: myfinalcybersecurityproject-389d-service
+     spec:
+       type: NodePort #Exposes the service as a node ports
+       ports:
+       - port: 8883
+         name: p1
+         protocol: TCP
+         targetPort: 8883
+       - port: 45491
+         name: p2
+         protocol: TCP
+         targetPort: 45491
+       - port: 50899
+         name: p3
+         protocol: TCP
+         targetPort: 50899
+       - port: 53145
+         name: p4
+         protocol: TCP
+         targetPort: 53145
+       selector:
+         app: myfinalcybersecurityproject-389d
 
 mysql-storage.yml
 ------------------------
